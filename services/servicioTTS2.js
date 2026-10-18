@@ -24,7 +24,7 @@ const textSpeech2 = (texto) => {
         const sintetizador = new sdk.SpeechSynthesizer(speechConfig, null);
         try{
             const timer = setTimeout(() => {
-                reject(new Error("Se acabó el tiempo dentro de la promesa del Promise"));
+                return reject(new Error("Se acabó el tiempo dentro de la promesa del Promise"));
             }, 16000);
             sintetizador.speakTextAsync(
                 texto, 
@@ -34,7 +34,7 @@ const textSpeech2 = (texto) => {
                             //Pasamos los datos generados por Azure TTS a un buffer que pueda manipular Node.js
                             const bufferAudio = Buffer.from(resultado.audioData);
                             //Ejecutamos el comando que nos permite reproducir el audio desde el proceso hijo 'spawn'
-                            //Se prepara el comando para recibir el buffer desde la entrada estabdar
+                            //Se prepara el comando para recibir el buffer desde la entrada estandar
                             const reproductor = spawn('mpg123', ['-']);
                             //Escribimos directamente el buffer del audio en la entrada estándar en el proceso hijo programado
                             reproductor.stdin.write(bufferAudio);
@@ -48,21 +48,22 @@ const textSpeech2 = (texto) => {
                             //Definimos lo que se debe hacer en caso de error en el reproductor
                             reproductor.on('error', () => {
                                 sintetizador.close();
-                                reject(new Error('Ocurrio un error dentro del reproductor'));
+                                return reject(new Error('Ocurrio un error dentro del reproductor'));
                             });
                             clearTimeout(timer);
                         }else{
                             console.log("Algo no cuadro dentro de la reason");
                             clearTimeout(timer);
-                            reject(new Error('Ocurrio un error con al generar el resultado con el sintetizador', resultado.errorDetails));
+                            return reject(new Error('Ocurrio un error con al generar el resultado con el sintetizador', resultado.errorDetails));
                         }
                     },
                     (error) => {
-                        reject(new Error('Ocurrio un error con el sintetizador', error));
+                        return reject(new Error('Ocurrio un error con el sintetizador', error));
                     }
             );
         }catch(error){
             console.error("Se genero un error dentro del sintetizador en TTS");
+            return reject(new Error("Error iniciando el proceso dentro de la promesa"));
         }
     });
 };

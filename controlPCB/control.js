@@ -11,7 +11,9 @@ const textSpeech2 = require('../services/servicioTTS2');
 const path = require('path');
 
 //Establecer el pin GPIO como entrada para el botón
+console.log("Hemos llegado antes del error")
 const button = new Gpio(17, 'in', 'falling', {debounceTimeout: 200});
+console.log("Hemos llegado despues del error")
 console.log("Se ha configurado el pin  GPIO 17 como entrada de forma correcta");
 
 //Definimos una variable que servira como bandera para poder controlar un análisis a la vez
@@ -76,7 +78,7 @@ const procesarImagen = async () => {
         const contenidoDescripcion = descripcion.content || 'Algo sucedio con la captura que no se pudo generar el audio descriptivo';
         await textSpeech2(contenidoDescripcion);
     }catch(error){
-        console.error("Se genero un error en el flujo de procesamiento de la función principal", error);
+        console.error("Se genero un error en el flujo de procesamiento de la función principal");
         //Volvemos a propagar el error para que el catch en donde se ejecuta la función pueda resolver
         throw error;
     }
