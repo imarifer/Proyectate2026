@@ -1,5 +1,5 @@
 //Importar onoff para poder administrar el trigger del botón
-const Gpio = require('onoff').Gpio;
+//const Gpio = require('onoff').Gpio;
 //Importar exec para poder capturar la imágen con la cámara
 //Importar spawn para un control más detallado de los procesos
 const { exec, spawn } =  require('child_process');
@@ -10,6 +10,15 @@ const textSpeech2 = require('../services/servicioTTS2');
 //Importamos el modulo que nos va permitir acceder a la ruta de los audios que no van a cambiar(estáticos)
 const path = require('path');
 
+const monitorearLinea = spawn('gpiomon', ['-b', 'pull-up', '-c', '0', '17']);
+monitorearLinea.stdout.on('data', (data) => {
+    const estado = data.toString();
+
+    if(estado.includes('FALLING')){
+        console.log("El botón se presiono correctamente");
+    }
+});
+/*
 //Establecer el pin GPIO como entrada para el botón
 console.log("Hemos llegado antes del error")
 const button = new Gpio(17, 'in', 'both', {debounceTimeout: 200});
@@ -125,3 +134,5 @@ process.on('SIGINT', () => {
     button.unexport();
     process.exit();
 });
+
+*/
