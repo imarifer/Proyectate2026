@@ -12,7 +12,7 @@ const path = require('path');
 
 //Establecer el pin GPIO como entrada para el botón
 console.log("Hemos llegado antes del error")
-const button = new Gpio(17, 'in', 'falling', {debounceTimeout: 200});
+const button = new Gpio(17, 'in', 'both', {debounceTimeout: 200});
 console.log("Hemos llegado despues del error")
 console.log("Se ha configurado el pin  GPIO 17 como entrada de forma correcta");
 
