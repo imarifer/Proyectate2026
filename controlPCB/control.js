@@ -14,7 +14,7 @@ const monitorearLinea = spawn('gpiomon', ['--bias', 'pull-up', '-c', 'gpiochip0'
 monitorearLinea.stdout.on('data', (data) => {
     const estado = data.toString();
 
-    if(estado.includes('FALLING')){
+    if(estado.includes('falling')){
         console.log("El botón se presiono correctamente");
     }else{
         console.log(estado);
