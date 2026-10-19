@@ -16,6 +16,8 @@ monitorearLinea.stdout.on('data', (data) => {
 
     if(estado.includes('FALLING')){
         console.log("El botón se presiono correctamente");
+    }else{
+        console.log(estado);
     }
 });
 /*
