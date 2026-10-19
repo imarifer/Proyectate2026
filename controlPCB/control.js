@@ -1,6 +1,6 @@
 //Importar onoff para poder administrar el trigger del botón
 //const Gpio = require('onoff').Gpio;
-const { Chip, Line } = require('gpiod');
+const gpiod = require('node-libgpiod');
 //Importar exec para poder capturar la imágen con la cámara
 //Importar spawn para un control más detallado de los procesos
 const { exec, spawn } =  require('child_process');
@@ -13,9 +13,14 @@ const path = require('path');
 
 //Establecer el pin GPIO como entrada para el botón
 console.log("Hemos llegado antes del error")
-const chip = new Chip(0);
-const button = chip.getLine(17);
-button.requestInputFlags('control-button', Line.REQUEST_FLAG_BIAS_PULL_UP);
+const chip = new gpiod.Chip(0);
+const button = new gpiod.Line(chip, 17);
+
+button.requestInputMode({
+    consumer: 'button-control',
+    direction: gpiod.LINE_REQ_DIR_IN,
+    edge: gpiod.LINE_REQ_EVENT_BOTH
+});
 //const button = new Gpio(17, 'in', 'both', {debounceTimeout: 200});
 console.log("Hemos llegado despues del error")
 console.log("Se ha configurado el pin  GPIO 17 como entrada de forma correcta");
