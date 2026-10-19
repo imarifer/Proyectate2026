@@ -12,14 +12,22 @@ const path = require('path');
 
 //Definimos una variable que servira como bandera para poder controlar un análisis a la vez
 let bandera = false;
-
+console.log(bandera);
 const monitorearLinea = spawn('gpiomon', ['--bias', 'pull-up', '-c', 'gpiochip0', '17']);
 
 monitorearLinea.stdout.on('data', async (data) => {
     const estado = data.toString();
 
+    if(estado.includes('rising')){
+        return;
+    }
+
+    if(bandera){
+        return;
+    }
+
     //Validamos que solo actue ante el evento pull-up al leer el estado que nos arroja
-    if(estado.includes('falling') && bandera != true){
+    if(estado.includes('falling')){
         console.log("El botón se presiono correctamente");
         //Si no se encuntra en procesamiento entonces activamos la bandera y mandamos a llamar las funciones correspondientes
         bandera = true;
@@ -54,8 +62,6 @@ monitorearLinea.stdout.on('data', async (data) => {
                 console.log("Se puede empezar con un nuevo procesamiento");
             }
         }
-    }else{
-        return;
     }
 });
 
