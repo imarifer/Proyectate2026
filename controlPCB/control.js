@@ -13,7 +13,7 @@ const path = require('path');
 
 //Establecer el pin GPIO como entrada para el botón
 console.log("Hemos llegado antes del error")
-const chip = gpiod.Chip(0);
+const chip = gpiod(0);
 const button = chip.getLine(17);
 
 button.requestInput('control-line', gpiod.LINE_REQ_FLAG_BIAS_PULL_UP);
