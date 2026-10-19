@@ -10,7 +10,7 @@ const textSpeech2 = require('../services/servicioTTS2');
 //Importamos el modulo que nos va permitir acceder a la ruta de los audios que no van a cambiar(estáticos)
 const path = require('path');
 
-const monitorearLinea = spawn('gpiomon', ['-b', 'pull-up', '-c', '0', '17']);
+const monitorearLinea = spawn('gpiomon', ['--bias', 'pull-up', '-c', 'gpiochip0', '17']);
 monitorearLinea.stdout.on('data', (data) => {
     const estado = data.toString();
 
